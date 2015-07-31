@@ -1,0 +1,130 @@
+* What
+  Functions to perform array operations in bash
+* Why
+  - I find the native syntax obtuse
+  - I like readable, understandable code
+  - I'm pretty sure bash is not going again
+  - Arrays are useful (well, pretty fundemental) to most code.
+
+* Who
+  George Jones <gmj@pobox.com> 
+
+* When
+  <2015-07-30 Thu>
+
+* Where  
+
+* How
+
+  - Define obviously named functions to do array operations
+  - See http://rosettacode.org/wiki/Arrays#UNIX_Shell
+  - Maybe see http://mywiki.wooledge.org/BashFAQ/006
+
+** Test variable to see if it is an array
+  #+begin_src sh  :results output :exports both
+  exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
+
+  isArray() {
+    #detect if arg is an array, returns 0 on sucess, 1 otherwise
+    # https://gist.github.com/coderofsalvation/8377369
+    [ -z "$1" ] && echo "isArray: Missing variable name." 1>&2 && return 1
+    if [ -n "$BASH" ]; then
+        # this is officially a hack, but it seems to be the best solution.  Yuck.
+        declare -p ${1} 2> /dev/null | grep 'declare \-a' >/dev/null && return 0
+    fi
+    return 1
+    }
+
+  foo=""
+  bar=(baz blort)
+
+  set +u
+
+  if isArray ; then echo no array is an array; else echo no array is not an array; fi
+
+  if isArray foo; then echo foo is an array; else echo foo is not an array; fi
+
+  if isArray bar; then echo bar is an array; else echo bar is not an array; fi
+  #+end_src
+
+  #+RESULTS[775144ce22dbc3bfc843d686bd1e65b51eb8fb7f]:
+  : # Thu Jul 30 20:11:55 EDT 2015
+  : isArray: Missing variable name.
+  : no array is not an array
+  : foo is not an array
+  : bar is an array
+
+
+
+  #+begin_src sh  :results output :exports both  
+  function isArray {
+    name=$1
+  }
+
+  #
+  # Declare array
+  #
+
+  function arrayCreate() {
+      # Declare an array
+      name=$1
+      echo $name
+  }
+
+  #
+  # Append to an array
+  #
+
+  # shell function to append values to an array
+  # push LIST VALUES ...
+  arrayAppend() {
+    # Append to an array
+    # http://rosettacode.org/wiki/Arrays#UNIX_Shell
+    local var=${1:?'Missing variable name!'}
+    shift
+    eval "\$$var=( \"\${$var[@]}\" \"$@\" )"
+  }
+
+  #
+  # Prepend to an array
+  #
+
+  #
+  # test if array contains an element
+  # http://stackoverflow.com/questions/3685970/check-if-an-array-contains-a-value
+
+  if 
+
+  #
+  # Remove element form an array
+  #
+
+  #
+  # Split to create an array
+  #
+
+  #
+  # Join array to create string
+  #
+
+  #
+  # Delete an array
+  #
+
+  #
+  # Test
+  #
+
+  arrayCreate "foo"
+
+  echo Done.
+  #+end_src
+
+  #+RESULTS:
+  : # Thu Jul 30 05:24:52 EDT 2015
+  : foo
+  : Done.
+
+
+
+ 
