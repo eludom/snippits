@@ -55,6 +55,59 @@
   : bar is an array
 
 
+** Create an array
+  #+name: createArray
+  #+begin_src sh  :results output :exports both
+  exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
+
+  arrayCreate() {
+    # Create an array.
+    # Usgae: arrayCreate NAME [element1 element2...]
+    [ -z "${1:-''}" ] && echo "createArray: Missing variable name." 1>&2 && return 1
+    local var=${1}
+    shift
+    echo $var
+
+    if [ -z "${1:-''}" ]; then
+      eval "$var=( )"
+    else
+      eval "$var=(  $@ )"
+    fi
+
+    return 0
+  }
+
+  echo 
+  echo CREATE ARRAYS
+  echo 
+  arrayCreate qux baz blort bletch  || true
+  echo qux is ${qux[@]}
+
+  arrayCreate quux bart || true
+  echo quux is ${quux[@]} || true
+
+  arrayCreate quuux  || true
+  echo quuux is ${quuux[@]:-''} || true
+
+  #+end_src
+
+  #+RESULTS[e3d17f040adf1ba8e7b4df32ecc2f79dfdb627fc]: createArray
+  #+begin_example
+  # Fri Jul 31 19:41:59 EDT 2015
+
+  CREATE ARRAYS
+
+  qux
+  qux is baz blort bletch
+  quux
+  quux is bart
+  quuux
+  quuux is 
+#+end_example
+
+
+
+
 
   #+begin_src sh  :results output :exports both  
   function isArray {
@@ -80,7 +133,7 @@
   arrayAppend() {
     # Append to an array
     # http://rosettacode.org/wiki/Arrays#UNIX_Shell
-    local var=${1:?'Missing variable name!'}
+    local var=${1:?'Missing array name!'}
     shift
     eval "\$$var=( \"\${$var[@]}\" \"$@\" )"
   }
