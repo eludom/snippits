@@ -42,38 +42,6 @@
     - Maybe see http://mywiki.wooledge.org/BashFAQ/006
     - http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_10_02.html
 
-** Test Function
-  #+name: testFunction
-  #+begin_src sh  :results output :exports both
-  exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
-
-  source bashArrays.sh
-
-  unset foo
-
-  pass=0
-  fail=0
-  aFoo=(foo bar baz)
-  arrayTest "some test" aFoo ${aFoo[@]}  && ((pass+=1)) || ((fail+=1))
-  arrayTest "some test" aFoo ${aFoo[@]} foo && ((pass+=1)) || ((fail+=1))
-
-  echo 
-  echo "Passing tests:" $pass
-  echo "Failing tests:" $fail
-
- #  testArray(foo,"bar")
- 
-  #+end_src
-
-  #+RESULTS[f9a38d94751d3fa4061362b3607f4b20df8897d0]: testFunction
-  : # Sat Aug 1 07:35:29 EDT 2015
-  : pass: some test
-  : fail: some test
-  : 
-  : Passing tests: 1
-  : Failing tests: 1
-
-
 ** Create an array
   #+name: arrayCreate
   #+begin_src sh  :results output :exports both
@@ -109,27 +77,47 @@
 
 
 
-** Test variable to see if it is an array
+** Test variables to see if they are arrays
   #+begin_src sh  :results output :exports both
   exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
 
   source bashArrays.sh
+  pass=0
+  fail=0
 
-  foo=""
-  bar=(baz blort)
+  array="noArray"
+  if isArray 2> /dev/null ; then value="noArray is an array"; else value="noArray is not an array"; fi
+  arrayTest "isArray run with no name"  value "noArray is not an array" && ((pass+=1)) || ((fail+=1))
 
-  if isArray ; then echo no array is an array; else echo no array is not an array; fi
+  if isArray "" ; then value="empty string is an array"; else value="empty string is not an array"; fi
+  arrayTest "isArray with an empty string" value "empty string is not an array" && ((pass+=1)) || ((fail+=1))
 
-  if isArray foo; then echo foo is an array; else echo foo is not an array; fi
+  foo="foo"
+  if isArray foo ; then value="foo is an array"; else value="foo is not an array"; fi
+  arrayTest "isArray run on string" value "foo is not an array" && ((pass+=1)) || ((fail+=1))
 
-  if isArray bar; then echo bar is an array; else echo bar is not an array; fi
+
+  foo=(foo bar)
+  if isArray bar ; then value="foo is an array"; else value="foo is not an array"; fi
+  arrayTest "isArray run on array" value "foo is an array" && ((pass+=1)) || ((fail+=1))
+
+
+#  foo=""
+#  bar=(baz blort)
+#  if isArray ; then echo no array is an array; else echo no array is not an array; fi
+#
+#  if isArray foo; then echo foo is an array; else echo foo is not an array; fi
+#
+#  if isArray bar; then echo bar is an array; else echo bar is not an array; fi
   #+end_src
 
-  #+RESULTS[62ae659f880fec698cc070a34268151cd9073068]:
-  : # Fri Jul 31 20:52:33 EDT 2015
-  : no array is not an array
-  : foo is not an array
-  : bar is an array
+  #+RESULTS[c7608bb156284b8e8175531c953f4e10f065f755]:
+  : # Sat Aug 1 08:31:13 EDT 2015
+  : pass: isArray run with no name
+  : isArray: Missing array name.
+  : pass: isArray with an empty string
+  : pass: isArray run on string
+  : fail: isArray run on array
 
 
 
