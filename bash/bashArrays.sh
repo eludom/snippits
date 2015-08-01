@@ -90,7 +90,7 @@ arrayTest() {
        echo pass: $testName
        return 0
     else
-       echo diff
+       echo diff expected values and actual values 1>&1
        diff -b  <(echo "$expectedValues" ) <(echo "$actualValues")
        echo fail: $testName
        return 1
