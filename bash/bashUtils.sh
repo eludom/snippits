@@ -27,13 +27,10 @@ lc() {
 }
 
 
-stringEqual() {
+stringsEqual() {
     # case-insensitive comparison with spaces removed
-    echo one $1
     onePrime=$(lc $(squash $1))
-    echo two $2
     twoPrime=$(lc $(squash $2))
-    echo onePrime $onePrime twoPrime $twoPrime
     [[ "$onePrime" == "$twoPrime" ]] && return 0 || return 1
 }
 
@@ -49,7 +46,7 @@ stringTests() {
     echo "lc /$foobar/ /$(lc $foobar)/"
     echo "lc squash /$foobar/ /$(lc $(squash $foobar))/"
 
-    if stringEqual "$foo" "$bar";then echo same; else echo different;fi
+    if stringsEqual "$foo" "$bar";then echo same; else echo different;fi
 }
 
 

@@ -1,3 +1,5 @@
+source bashUtils.sh
+
 isArray() {
     # Test if variable is an array
     #
@@ -40,9 +42,13 @@ arrayCreate() {
 # http://www.linuxquestions.org/questions/programming-9/bash-array-add-function-example-using-indirect-array-reference-as-function-argument-815329/
 
 function arrayAppend {
-    [ -z "${1:-}" ] && echo "createAppend: Missing array name." 1>&2 && return 1
+    [ -z "${1:-}" ] && echo "arrayAppend: Missing array name." 1>&2 && return 1    
     local R=$1 A
     shift
+
+    ! isArray $R && echo "arrayAppend: $R is not an array " 1>&2 && return 1    
+
+    #echo R is   $(eval "echo \${$R[@]-}")
 
     for A; do
         eval "$R[\${#$R[@]}]=\$A"
@@ -77,15 +83,15 @@ arrayTest() {
 #    [ -z "${1:-}" ] && echo "arrayTest: Missing array value(s)." 1>&2 && return 1
     local expectedValues="${@:-}"
     shift
-    #echo expectedValues is ${expectedValues}
 
     eval 'actualValues=${'$arrayName'[@]-}'
-    #echo actualValues are "${actualValues-}"
 
-    if [[ "${expectedValues-}" == "${actualValues-}" ]]; then
+    if stringsEqual "${expectedValues-}" "${actualValues-}"; then
        echo pass: $testName
        return 0
     else
+       echo diff
+       diff -b  <(echo "$expectedValues" ) <(echo "$actualValues")
        echo fail: $testName
        return 1
     fi
