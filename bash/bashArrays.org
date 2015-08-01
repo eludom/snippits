@@ -39,85 +39,121 @@
   - See http://rosettacode.org/wiki/Arrays#UNIX_Shell
   - Maybe see http://mywiki.wooledge.org/BashFAQ/006
 
+** Create an array
+  #+name: arrayCreate
+  #+begin_src sh  :results output :exports both
+  exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
+
+  source bashArrays.sh
+
+  arrayCreate qux baz blort bletch  || true
+  echo qux is ${qux[@]:-}
+ 
+  arrayCreate quux bart || true
+  echo quux is ${quux[@]:-} || true
+
+  arrayCreate quuux  || true
+  echo quuux is ${quuux[@]:-''} || true
+
+  arrayCreate  || true
+
+  #+end_src
+
+  #+RESULTS[1d99c67e88753d68aac76aa5c96d8c71ccd70584]: arrayCreate
+  : # Sat Aug 1 05:30:05 EDT 2015
+  : qux is baz blort bletch
+  : quux is bart
+  : quuux is 
+  : createArray: Missing variable name.
+
+
 ** Test variable to see if it is an array
   #+begin_src sh  :results output :exports both
   exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
 
+  source bashArrays.sh
 
   foo=""
   bar=(baz blort)
 
-
   if isArray ; then echo no array is an array; else echo no array is not an array; fi
-1
+
   if isArray foo; then echo foo is an array; else echo foo is not an array; fi
 
   if isArray bar; then echo bar is an array; else echo bar is not an array; fi
   #+end_src
 
-  #+RESULTS[3566d32379969619b322e3f02b2fd4ee7c6e1552]:
-  : # Fri Jul 31 19:49:42 EDT 2015
+  #+RESULTS[62ae659f880fec698cc070a34268151cd9073068]:
+  : # Fri Jul 31 20:52:33 EDT 2015
   : no array is not an array
   : foo is not an array
   : bar is an array
 
-** Create an array
-  #+name: createArray
+
+
+** Append to an array
+  #+name: arrayAppend
   #+begin_src sh  :results output :exports both
-  exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
+#  exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
+    set -u;  set +x; echo '#' `date;`
 
-
+  source bashArrays.sh
+  
   echo 
-  echo CREATE ARRAYS
+  echo APPEND TO ARRAY
   echo 
-  arrayCreate qux baz blort bletch  || true
-  echo qux is ${qux[@]}
 
-  arrayCreate quux bart || true
-  echo quux is ${quux[@]} || true
-
-  arrayCreate quuux  || true
+  arrayCreate qux 2>&1 || true
+  echo qux is ${qux[@]:-}
+  echo
+ 
+  arrayAppend qux one || true
+  echo quux is ${quux[@]:-} || true
+  echo
+  
+  arrayAppend quuux two three || true
   echo quuux is ${quuux[@]:-''} || true
+  echo
 
+  arrayAppend || true
+  echo quuux is ${quuux[@]:-''} || true
+  echo
+   
   #+end_src
 
-  #+RESULTS[922c0b5d1647fdbe8e7a5b91159d1b18a7699c3c]: createArray
-  : # Fri Jul 31 20:12:57 EDT 2015
-  : 
-  : CREATE ARRAYS
-  : 
-  : qux is baz blort bletch
-  : quux is bart
-  : quuux is 
+  #+RESULTS[3b226b7885ea7df8a79d2588a334b312e382a80a]: arrayAppend
+  #+begin_example
+  # Sat Aug 1 05:17:28 EDT 2015
 
-  #+begin_src sh  :results output :exports both  
-  function isArray {
-    name=$1
-  }
+  APPEND TO ARRAY
 
-  #
-  # Declare array
-  #
+  qux is
 
-  function arrayCreate() {
-      # Declare an array
-      name=$1
-      echo $name
-  }
+  var qux
+  varAT qux
+  args one
 
-  #
-  # Append to an array
-  #
+  quux is
 
-  # shell function to append values to an array
-  # push LIST VALUES ...
-  arrayAppend() {
-    # Append to an array
-    # http://rosettacode.org/wiki/Arrays#UNIX_Shell
-    local var=${1:?'Missing array name!'}
-    shift
-    eval "\$$var=( \"\${$var[@]}\" \"$@\" )"
-  }
+  var quuux
+  varAT quuux
+  args two three
+
+  quuux is quuux two three
+
+  var ''
+  varAT ''
+  args
+
+  quuux is quuux two three
+
+#+end_example
+
+
+
+
+ 
+
 
   #
   # Prepend to an array
