@@ -5,9 +5,28 @@
   - I like readable, understandable code
   - I'm pretty sure bash is not going again
   - Arrays are useful (well, pretty fundemental) to most code.
+  - Learn more bash
 
+* Why not
+
+  From http://robertmuth.blogspot.com/2012/08/better-bash-scripting-in-15-minutes.html
+
+  #+begin_quote
+  Signs you should not be using a bash script:
+  - your script is longer than a few hundred lines of code
+  - you need data structures beyond simple arrays
+  - you have a hard time working around quoting issues
+  - you do a lot of string manipulation
+  - you do not have much need for invoking other programs or pipe-lining them
+  - you worry about performance
+  #+end_quote
+
+  To which I might add, "You find yourself writing a group of array
+  functions to make bash arrays work more like python arrays
+  
 * Who
-  George Jones <gmj@pobox.com> 
+  - George Jones <gmj@pobox.com> 
+  - Snippits and borrowing from all over, cited.
 
 * When
   <2015-07-30 Thu>
@@ -24,58 +43,29 @@
   #+begin_src sh  :results output :exports both
   exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
 
-  isArray() {
-    #detect if arg is an array, returns 0 on sucess, 1 otherwise
-    # https://gist.github.com/coderofsalvation/8377369
-    [ -z "$1" ] && echo "isArray: Missing variable name." 1>&2 && return 1
-    if [ -n "$BASH" ]; then
-        # this is officially a hack, but it seems to be the best solution.  Yuck.
-        declare -p ${1} 2> /dev/null | grep 'declare \-a' >/dev/null && return 0
-    fi
-    return 1
-    }
 
   foo=""
   bar=(baz blort)
 
-  set +u
 
   if isArray ; then echo no array is an array; else echo no array is not an array; fi
-
+1
   if isArray foo; then echo foo is an array; else echo foo is not an array; fi
 
   if isArray bar; then echo bar is an array; else echo bar is not an array; fi
   #+end_src
 
-  #+RESULTS[775144ce22dbc3bfc843d686bd1e65b51eb8fb7f]:
-  : # Thu Jul 30 20:11:55 EDT 2015
-  : isArray: Missing variable name.
+  #+RESULTS[3566d32379969619b322e3f02b2fd4ee7c6e1552]:
+  : # Fri Jul 31 19:49:42 EDT 2015
   : no array is not an array
   : foo is not an array
   : bar is an array
-
 
 ** Create an array
   #+name: createArray
   #+begin_src sh  :results output :exports both
   exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
 
-  arrayCreate() {
-    # Create an array.
-    # Usgae: arrayCreate NAME [element1 element2...]
-    [ -z "${1:-''}" ] && echo "createArray: Missing variable name." 1>&2 && return 1
-    local var=${1}
-    shift
-    echo $var
-
-    if [ -z "${1:-''}" ]; then
-      eval "$var=( )"
-    else
-      eval "$var=(  $@ )"
-    fi
-
-    return 0
-  }
 
   echo 
   echo CREATE ARRAYS
@@ -91,23 +81,14 @@
 
   #+end_src
 
-  #+RESULTS[e3d17f040adf1ba8e7b4df32ecc2f79dfdb627fc]: createArray
-  #+begin_example
-  # Fri Jul 31 19:41:59 EDT 2015
-
-  CREATE ARRAYS
-
-  qux
-  qux is baz blort bletch
-  quux
-  quux is bart
-  quuux
-  quuux is 
-#+end_example
-
-
-
-
+  #+RESULTS[922c0b5d1647fdbe8e7a5b91159d1b18a7699c3c]: createArray
+  : # Fri Jul 31 20:12:57 EDT 2015
+  : 
+  : CREATE ARRAYS
+  : 
+  : qux is baz blort bletch
+  : quux is bart
+  : quuux is 
 
   #+begin_src sh  :results output :exports both  
   function isArray {
