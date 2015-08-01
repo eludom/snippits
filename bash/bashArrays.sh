@@ -62,29 +62,35 @@ arrayAppend() {
 }
 
 arrayTest() {
-    [ -z "${1:-}" ] && echo "createAppend: Missing test name." 1>&2 && return 1
+    # execute a test of array expected values
+    #
+    # Usage: arrayTest "test name" arrayName "expected values"
+    # Output: pass/fail message to stdout
+    # Return: 0 on pass, 1 otherwise
+
+    [ -z "${1:-}" ] && echo "arrayTest: Missing test name." 1>&2 && return 1
     local testName="${1:-}"
     shift
-    echo testName is ${testName}
+    #echo testName is ${testName}
     
-    [ -z "${1:-}" ] && echo "createAppend: Missing array name." 1>&2 && return 1
+    [ -z "${1:-}" ] && echo "arrayTest: Missing array name." 1>&2 && return 1
     local arrayName="${1:-}"
     shift
-    echo arrayName is ${arrayName}
+    #echo arrayName is ${arrayName}
     
-    [ -z "${1:-}" ] && echo "createAppend: Missing array value(s)." 1>&2 && return 1
+#    [ -z "${1:-}" ] && echo "arrayTest: Missing array value(s)." 1>&2 && return 1
     local expectedValues="${@:-}"
     shift
-    echo expectedValues is ${expectedValues}
+    #echo expectedValues is ${expectedValues}
 
     eval 'actualValues=${'$arrayName'[@]-}'
-    echo actualValues are "${actualValues-}"
+    #echo actualValues are "${actualValues-}"
 
     if [[ "${expectedValues-}" == "${actualValues-}" ]]; then
-       echo pass: $testName foo 1>&2
+       echo pass: $testName
        return 0
     else
-       echo fail: $testName bar 1>&2
+       echo fail: $testName
        return 1
     fi
 }
