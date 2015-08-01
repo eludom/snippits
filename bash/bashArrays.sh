@@ -44,19 +44,47 @@ arrayAppend() {
     # Return: 0 if defined, 1 otherwise.
     #
     [ -z "${1:-}" ] && echo "createAppend: Missing array name." 1>&2 && return 1
-    local var="${1:-''}"
+    local var="${1:-}"
     shift
 
-    echo var ${var-''}
+    echo var ${var-}
     echo varAT ${var[@]}
     echo args "$@"
     echo
     
-    if [ -z "${1:-''}" ]; then
+    if [ -z "${1:-}" ]; then
 	true
     else
 	eval "$var=(\"${var[@]}\"  \"$@\" )"
     fi
     
     return 0
+}
+
+arrayTest() {
+    [ -z "${1:-}" ] && echo "createAppend: Missing test name." 1>&2 && return 1
+    local testName="${1:-}"
+    shift
+    echo testName is ${testName}
+    
+    [ -z "${1:-}" ] && echo "createAppend: Missing array name." 1>&2 && return 1
+    local arrayName="${1:-}"
+    shift
+    echo arrayName is ${arrayName}
+    
+    [ -z "${1:-}" ] && echo "createAppend: Missing array value(s)." 1>&2 && return 1
+    local expectedValues="${@:-}"
+    shift
+    echo expectedValues is ${expectedValues}
+
+    eval 'actualValues=${'$arrayName'[@]-}'
+    echo actualValues are "${actualValues-}"
+
+    if [[ "${expectedValues-}" == "${actualValues-}" ]]; then
+       echo pass: $testName foo 1>&2
+       return 0
+    else
+       echo fail: $testName bar 1>&2
+       return 1
+    fi
 }
