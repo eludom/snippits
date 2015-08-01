@@ -91,7 +91,6 @@
 
   if isArray "" ; then value="empty string is an array"; else value="empty string is not an array"; fi
   arrayTest "isArray with an empty string" value "empty string is not an array" && ((pass+=1)) || ((fail+=1))
-
   foo="foo"
   if isArray foo ; then value="foo is an array"; else value="foo is not an array"; fi
   arrayTest "isArray run on string" value "foo is not an array" && ((pass+=1)) || ((fail+=1))

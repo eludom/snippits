@@ -1,3 +1,19 @@
+isArray() {
+    # Test if variable is an array
+    #
+    # Usage: isArray NAME
+    # Return: 0 if NAME is array, 1 otherwise.
+    #
+    # https://gist.github.com/coderofsalvation/8377369
+    #
+    [ -z "${1:-}" ] && echo "isArray: Missing array name." 1>&2 && return 1
+    if [ -n "$BASH" ]; then
+        # this is officially a hack, but it seems to be the best solution.  Yuck.
+        declare -p ${1:-''} 2> /dev/null | grep 'declare \-a' >/dev/null && return 0
+    fi
+    return 1
+}
+
 arrayCreate() {
     # Create an array.
     #
@@ -18,48 +34,28 @@ arrayCreate() {
     return 0
 }
 
+#
+# void addelementtoarray (string <array_name>, string <element>, ...)
+#
+# http://www.linuxquestions.org/questions/programming-9/bash-array-add-function-example-using-indirect-array-reference-as-function-argument-815329/
 
-isArray() {
-    # Test if variable is an array
-    #
-    # Usage: isArray NAME
-    # Return: 0 if NAME is array, 1 otherwise.
-    #
-    # https://gist.github.com/coderofsalvation/8377369
-    #
-    [ -z "${1:-}" ] && echo "isArray: Missing array name." 1>&2 && return 1
-    if [ -n "$BASH" ]; then
-        # this is officially a hack, but it seems to be the best solution.  Yuck.
-        declare -p ${1:-''} 2> /dev/null | grep 'declare \-a' >/dev/null && return 0
-    fi
-    return 1
-}
-
-
-arrayAppend() {
-    # Append to an array
-    #
-    # Usgae: arrayAppend NAME [element1 element2...]
-    # Ouput: NAME set as global
-    # Return: 0 if defined, 1 otherwise.
-    #
+function arrayAppend {
     [ -z "${1:-}" ] && echo "createAppend: Missing array name." 1>&2 && return 1
-    local var="${1:-}"
+    local R=$1 A
     shift
 
-    echo var ${var-}
-    echo varAT ${var[@]}
-    echo args "$@"
-    echo
-    
-    if [ -z "${1:-}" ]; then
-	true
-    else
-	eval "$var=(\"${var[@]}\"  \"$@\" )"
-    fi
-    
+    for A; do
+        eval "$R[\${#$R[@]}]=\$A"
+    done
     return 0
+
+    # Or a one liner but more runtime expensive with large arrays since all elements will always expand.
+    # In this method also, all element IDs are reset starting from 0.
+    # Maybe this is also what you need since the IDs here does not need to be sorted.  A problem may occur on the former if an ID exist that is higher than the number of elements.
+    # Only that it resets all IDs everytime.
+    # eval "$1=(\"\${$1[@]}\" \"${2:@}\")"
 }
+
 
 arrayTest() {
     # execute a test of array expected values
