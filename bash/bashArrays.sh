@@ -39,11 +39,19 @@ isArray() {
     #
     # https://gist.github.com/coderofsalvation/8377369
     #
-    [ -z "${1:-}" ] && echo "isArray: Missing array name." 1>&2 && return 1
+    export arrayError=""
+    
+    if [ -z "${1:-}" ]; then 
+	arrayError="isArray: Missing array name."
+	return 1
+    fi
+    
     if [ -n "$BASH" ]; then
         # this is officially a hack, but it seems to be the best solution.  Yuck.
         declare -p ${1:-''} 2> /dev/null | grep 'declare \-a' >/dev/null && return 0
     fi
+
+    arrayError="isArray: ${1} is not an array."    
     return 1
 }
 
@@ -51,19 +59,27 @@ arrayCreate() {
     # Create an array.
     #
     # Usgae: arrayCreate NAME [element1 element2...]
-    # Ouput: NAME set as global
+    # Ouput: NAME set as global, $arrayErr set as error message
     # Return: 0 if defined, 1 otherwise.
     #
-    [ -z "${1:-}" ] && echo "createArray: Missing array name." 1>&2 && return 1
+    export arrayError=""
+    
+    if [ -z "${1:-}" ]; then
+	arrayError="arrayCreate: Missing array name."
+	echo  $arrayError 1>&2 
+        return 1
+    fi
+
     local var=${1}
     shift
     
-    if [ -z "${1:-''}" ]; then
+    if [ -z "${1:-}" ]; then
+        foo="foo"
 	eval "$var=( )"
     else
 	eval "$var=(  $@ )"
     fi
-    
+
     return 0
 }
 
@@ -74,7 +90,9 @@ arrayLength() {
 #
 # void addelementtoarray (string <array_name>, string <element>, ...)
 #
-# http://www.linuxquestions.org/questions/programming-9/bash-array-add-function-example-using-indirect-array-reference-as-function-argument-815329/
+
+
+	# http://www.linuxquestions.org/questions/programming-9/bash-array-add-function-example-using-indirect-array-reference-as-function-argument-815329/
 
 function arrayAppend {
     [ -z "${1:-}" ] && echo "arrayAppend: Missing array name." 1>&2 && return 1    
@@ -101,25 +119,21 @@ function arrayAppend {
 arrayTest() {
     # execute a test of array expected values
     #
-    # Usage: arrayTest "test name" arrayName "expected values"
+    # Usage: arrayTest "test name" "expected results "actual results"
     # Output: pass/fail message to stdout
     # Return: 0 on pass, 1 otherwise
 
     [ -z "${1:-}" ] && echo "arrayTest: Missing test name." 1>&2 && return 1
     local testName="${1:-}"
     shift
-    #echo testName is ${testName}
     
-    [ -z "${1:-}" ] && echo "arrayTest: Missing array name." 1>&2 && return 1
-    local arrayName="${1:-}"
-    shift
-    #echo arrayName is ${arrayName}
-    
-#    [ -z "${1:-}" ] && echo "arrayTest: Missing array value(s)." 1>&2 && return 1
-    local expectedValues="${@:-}"
+    [ -z "${1:-}" ] && echo "arrayTest: Missing expected values." 1>&2 && return 1
+    local expectedValues="${1:-}"
     shift
 
-    eval 'actualValues=${'$arrayName'[@]-}'
+    [ -z "${1:-}" ] && echo "arrayTest: Missing actual values." 1>&2 && return 1
+    local actualValues="${1:-}"
+    shift
 
     if stringsEqual "${expectedValues-}" "${actualValues-}"; then
        echo pass: $testName
