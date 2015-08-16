@@ -69,11 +69,88 @@
   #+end_src
 
   #+RESULTS[9ef573b8eac102deebccfc2800dff5a7d0214706]: arrayCreate
-  : # Sat Aug 1 08:03:27 EDT 2015
+  : # Sat Aug 1 10:59:04 EDT 2015
   : pass: Test missing array name
   : pass: Create array with no values
   : pass: Create array with one value
   : pass: Create array with two values
+
+
+
+  
+** Append to an array
+  #+name: arrayAppend
+  #+begin_src sh  :results output :exports both
+      exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
+
+      source bashArrays.sh
+
+      unset foo
+  
+      pass=0
+      fail=0
+      echo foo baz
+
+      # --- Test Setup ---
+      testName="Test missing array name"
+      expectedResults="arrayAppend: Missing array name."
+      # --- Run test ---
+      errMsg=$(arrayAppend 2>&1) || true
+      # --- Report Results ---
+      arrayTest "$testName" errMsg "$expectedResults" && ((pass+=1)) || ((fail+=1))
+
+
+      # --- Test Setup ---
+      testName="Attempt to append one element to a non-arrray"
+      unset foo
+      foo="bar"
+      expectedResults="arrayAppend: foo is not an array "
+      # --- Run test ---
+      errMsg=$(arrayAppend foo bar 2>&1) || true
+      #actualResults=("$errMeg")
+      #echo results $results
+      # --- Report Results ---
+      arrayTest "$testName: errMsg=/$errMsg/" foo $expectedResults  && ((pass+=1)) || ((fail+=1))
+
+
+      # --- Test Setup ---
+      testName="Append one element to non-existant array"
+      unset foo
+      expectedResults=""
+      # --- Run test ---
+      arrayAppend foo bar || true
+      actualResults="${foo[@]-}"
+      # --- Report Results ---
+      arrayTest "$testName: foo=/$actualResults/" foo $expectedResults  && ((pass+=1)) || ((fail+=1))
+
+      # --- Test Setup ---
+      testName="Append one element to existing empty array"
+      foo=()
+      expectedResults="bar"
+      # --- Run test ---
+      arrayAppend foo bar || true
+      actualResults="${foo[@]-}"
+      #echo results $results
+      # --- Report Results ---
+      arrayTest "$testName: foo=/$actualResults/" foo $expectedResults  && ((pass+=1)) || ((fail+=1))
+
+
+      # --- Test Setup ---
+      testName="Append one element to existing non-empty array"
+      foo=(foo)
+      expectedResults="foo bar"
+      # --- Run test ---
+      arrayAppend foo bar || true
+      actualResults="${foo[@]-}"
+      #echo results $results
+      # --- Report Results ---
+      arrayTest "$testName: foo=/$actualResults/" foo $expectedResults  && ((pass+=1)) || ((fail+=1))
+
+  #+end_src
+
+  #+RESULTS[da4ef9abb85551ed1c13b8585c8fb352e6c82657]: arrayAppend
+
+
 
 
 
@@ -91,6 +168,7 @@
 
   if isArray "" ; then value="empty string is an array"; else value="empty string is not an array"; fi
   arrayTest "isArray with an empty string" value "empty string is not an array" && ((pass+=1)) || ((fail+=1))
+
   foo="foo"
   if isArray foo ; then value="foo is an array"; else value="foo is not an array"; fi
   arrayTest "isArray run on string" value "foo is not an array" && ((pass+=1)) || ((fail+=1))
@@ -101,17 +179,10 @@
   arrayTest "isArray run on array" value "foo is an array" && ((pass+=1)) || ((fail+=1))
 
 
-#  foo=""
-#  bar=(baz blort)
-#  if isArray ; then echo no array is an array; else echo no array is not an array; fi
-#
-#  if isArray foo; then echo foo is an array; else echo foo is not an array; fi
-#
-#  if isArray bar; then echo bar is an array; else echo bar is not an array; fi
   #+end_src
 
-  #+RESULTS[c7608bb156284b8e8175531c953f4e10f065f755]:
-  : # Sat Aug 1 08:31:13 EDT 2015
+  #+RESULTS[9be0f9156f51054d6817aecee9ec4114aa8d1792]:
+  : # Sat Aug 1 09:42:59 EDT 2015
   : pass: isArray run with no name
   : isArray: Missing array name.
   : pass: isArray with an empty string
@@ -120,8 +191,8 @@
 
 
 
-** Append to an array
-  #+name: arrayAppend
+** Append to an array OLD
+  #+name: arrayAppendold
   #+begin_src sh  :results output :exports both
 #  exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
     set -u;  set +x; echo '#' `date;`
@@ -149,34 +220,6 @@
   echo
    
   #+end_src
-
-  #+RESULTS[3b226b7885ea7df8a79d2588a334b312e382a80a]: arrayAppend
-  #+begin_example
-  # Sat Aug 1 05:17:28 EDT 2015
-
-  APPEND TO ARRAY
-
-  qux is
-
-  var qux
-  varAT qux
-  args one
-
-  foo is
-
-  var quuux
-  varAT quuux
-  args two three
-
-  quuux is quuux two three
-
-  var ''
-  varAT ''
-  args
-
-  quuux is quuux two three
-
-#+end_example
 
 
 

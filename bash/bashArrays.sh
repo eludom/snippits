@@ -1,3 +1,34 @@
+# Bash array fucntions
+#
+# Copyright (C) George Jones <gmj@pobox.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#
+# * TODO LIST
+# ** Functions to add
+#    -arraySplit
+#    -arrayJoin
+#    -arrayPrepend (special case of append? with switch/option? wrapper?)
+#
+# ** General  TODOs
+#   - Run validation tests, mark funcions as working or not, return 1 if not working.
+#   - Figure out some way to add options/config, e.g. --noclobber for create, etc.
+
+
+
+
 source bashUtils.sh
 
 isArray() {
@@ -34,6 +65,10 @@ arrayCreate() {
     fi
     
     return 0
+}
+
+arrayLength() {
+   echo "Implment this.  Reurn length"
 }
 
 #
@@ -95,4 +130,18 @@ arrayTest() {
        echo fail: $testName
        return 1
     fi
+}
+
+
+arraySplit() {
+    echo "Implment this.  Take char/regexp, split, return array"
+}
+
+
+arrayJoin() {
+    echo "Implment this.  Take char/regexp, rarray, join, return array"
+}
+
+arrayDestroy() {
+    echo "Implenet this.  unset an array."
 }
