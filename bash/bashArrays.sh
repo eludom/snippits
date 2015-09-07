@@ -26,6 +26,9 @@
 #   - Run validation tests, mark funcions as working or not, return 1 if not working.
 #   - Figure out some way to add options/config, e.g. --noclobber for create, etc.
 
+#
+# http://www.linuxjournal.com/content/return-values-bash-functions
+# 
 
 
 
@@ -95,13 +98,26 @@ arrayLength() {
 	# http://www.linuxquestions.org/questions/programming-9/bash-array-add-function-example-using-indirect-array-reference-as-function-argument-815329/
 
 function arrayAppend {
-    [ -z "${1:-}" ] && echo "arrayAppend: Missing array name." 1>&2 && return 1    
-    local R=$1 A
+    export arrayError=""
+
+    if [ -z "${1:-}" ]; then 
+	arrayError="arrayAppend: Missing array name."
+	return 1
+    fi
+    
+    local R=$1
     shift
 
-    ! isArray $R && echo "arrayAppend: $R is not an array " 1>&2 && return 1    
+    echo R is $R
 
-    #echo R is   $(eval "echo \${$R[@]-}")
+    status=isArray $R
+    if [ ! $status ]; then 
+	arrayError="arrayAppend: $R is not an array "
+	return 1 
+    fi
+
+    echo $R is an array
+    exit 1
 
     for A; do
         eval "$R[\${#$R[@]}]=\$A"
