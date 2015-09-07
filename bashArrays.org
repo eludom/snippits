@@ -1,0 +1,78 @@
+* What
+  Functions to perform array operations in bash
+* Why
+  Because the I find the native syntax obtuse &
+  I like readable, understandable code.
+
+* Who
+  George Jones <gmj@pobox.com> 
+
+* When
+  <2015-07-30 Thu>
+
+* Where  
+
+* How
+
+  - Define obviously named functions to do array operations
+  - See http://rosettacode.org/wiki/Arrays#UNIX_Shell
+  - Maybe see http://mywiki.wooledge.org/BashFAQ/006
+
+  #+begin_src sh  :results output :exports both
+  exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
+
+  #
+  # See if varaible is define and is an array
+  #
+
+  function isArray {
+    name=$1
+  }
+
+  #
+  # Declare array
+  #
+
+  function arrayCreate() {
+      name=$1
+      echo $name
+  }
+
+  #
+  # Append to an array
+  #
+
+  #
+  # Prepend to an array
+  #
+
+  #
+  # Remove element form an array
+  #
+
+  #
+  # Split to create an array
+  #
+
+  #
+  # Join array to create string
+  #
+
+  #
+  # Delete an array
+  #
+
+  #
+  # Test
+  #
+
+  arrayCreate "foo"
+
+  echo Done.
+  #+end_src
+
+  #+RESULTS:
+  : # Thu Jul 30 05:24:52 EDT 2015
+  : foo
+  : Done.
+
