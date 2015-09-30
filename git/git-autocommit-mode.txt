@@ -1,3 +1,9 @@
+Emacs git-auto-commit-mode: https://github.com/ryuslash/git-auto-commit-mode
+
+This, in fact rocks.  Backups are now irrelevant (at least for emacs
+git users).  And you thought VMS file version numbers were pretty neat...
+
+
 ;; -*- eval: (git-auto-commit-mode 1) -*-
 
 foo
