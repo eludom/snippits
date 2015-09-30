@@ -5,3 +5,9 @@ foo
 bar
 
 baz
+
+
+
+(setq gac-automatically-push-p t)
+(setq gac-ask-for-summary-p t)
+(add-hook 'certain-hook 'git-auto-commit-mode)
