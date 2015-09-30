@@ -1,3 +1,5 @@
 ;; -*- eval: (git-auto-commit-mode 1) -*-
 
 foo
+
+bar
