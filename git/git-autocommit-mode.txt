@@ -8,6 +8,7 @@ baz
 
 
 
-(setq gac-automatically-push-p t)
+; Comment out the auto push because it might be scary
+;(setq gac-automatically-push-p t)
 (setq gac-ask-for-summary-p t)
 (add-hook 'certain-hook 'git-auto-commit-mode)
