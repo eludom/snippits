@@ -40,3 +40,4 @@ https://github.com/ryuslash/git-auto-commit-mode
   You can also specify per file variables
   http://www.gnu.org/software/emacs/manual/html_node/emacs/Specifying-File-Variables.html#Specifying-File-Variables
   if you choose.
+
