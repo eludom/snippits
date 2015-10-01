@@ -22,7 +22,7 @@ https://github.com/ryuslash/git-auto-commit-mode
 
   #+begin_example
   (setq gac-automatically-push-p t)
-  (setq gac-ask-for-summary-p t)  
+  ;(setq gac-ask-for-summary-p t)  
   #+end_example
 
 * Per Directory configuration
@@ -30,8 +30,7 @@ https://github.com/ryuslash/git-auto-commit-mode
   To do things on a directory level, put something like this
 
   #+begin_example
-  ((nil . ((gac-ask-for-summary-p t)
-  	   (eval git-auto-commit-mode t))))
+  ((nil . ((eval git-auto-commit-mode 1))))  
   #+end_example
 
   in a file called =.dir-locals.el= in a directory you want to hae
