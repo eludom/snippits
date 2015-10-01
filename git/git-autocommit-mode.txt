@@ -12,6 +12,8 @@ bar
 
 baz
 
+qux
+
 
 
 ; Comment out the auto push because it might be scary
