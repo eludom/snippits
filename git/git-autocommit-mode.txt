@@ -1,23 +1,42 @@
-Emacs git-auto-commit-mode: https://github.com/ryuslash/git-auto-commit-mode
+In Emacs, every file save can now be a git commit+push. Backups are
+now irrelevant (at least for emacs git users).  And you thought VMS
+file version numbers were pretty neat...
 
-This, in fact rocks.  Backups are now irrelevant (at least for emacs
-git users).  And you thought VMS file version numbers were pretty neat...
+https://github.com/ryuslash/git-auto-commit-mode
 
+* Setup
 
-;; -*- eval: (git-auto-commit-mode 1) -*-
+  Install the package (=M-x package-install git-auto-commit-mode=) etc.
 
-foo
+  Add to your favorite =init.el= or friend:
 
-bar
+  #+begin_example
+  (add-hook 'certain-hook 'git-auto-commit-mode)
+  #+end_example
 
-baz
+* Global Configuation
 
-qux
+  Decide how daring and/or annoyed you want to be.  To go all-in and
+  always ask for summary and push do the following:
+  
 
-quux
+  #+begin_example
+  (setq gac-automatically-push-p t)
+  (setq gac-ask-for-summary-p t)  
+  #+end_example
 
+* Per Directory configuration
 
-; Comment out the auto push because it might be scary
-(setq gac-automatically-push-p t)
-(setq gac-ask-for-summary-p t)
-(add-hook 'certain-hook 'git-auto-commit-mode)
+  To do things on a directory level, put something like this
+
+  #+begin_example
+  ((nil . ((gac-ask-for-summary-p t)
+  	   (eval git-auto-commit-mode t))))
+  #+end_example
+
+  in a file called =.dir-locals.el= in a directory you want to hae
+  pushed.  See http://www.gnu.org/software/emacs/manual/html_node/emacs/Directory-Variables.html
+
+  You can also specify per file variables
+  http://www.gnu.org/software/emacs/manual/html_node/emacs/Specifying-File-Variables.html#Specifying-File-Variables
+  if you choose.
