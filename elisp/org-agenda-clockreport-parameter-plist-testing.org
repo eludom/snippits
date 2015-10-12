@@ -1,12 +1,26 @@
 ;; This buffer is for notes you don't want to save, and for Lisp evaluation.
 ;; If you want to create a file, visit that file with C-x C-f,
 ;; then enter the text in that file's own buffer.
-(setq org-agenda-clockreport-parameter-plist
-      (quote (:link t :maxlevel 5 :fileskip0 t :compact t :narrow 80 :formula %)))
-(:link t :maxlevel 5 :fileskip0 t :compact t :narrow 80 :formula %)
 
-(setq org-agenda-clockreport-parameter-plist
-      (quote (:link t :maxlevel 2 )))
+
 (:link t :maxlevel 2)
 
+* From stackexchange
+See http://emacs.stackexchange.com/questions/13793/how-to-add-a-column-in-org-mode-agenda-clockreport-to-show-percentage-of-time-fo
 
+#+begin_src emacs-lisp
+(setq org-agenda-clockreport-parameter-plist
+      (quote (:link t :maxlevel 5 :fileskip0 t :compact t :narrow 80 :formula %)))
+#+end_src
+
+* Original value
+#+begin_src emacs-lisp
+(setq org-agenda-clockreport-parameter-plist
+      (quote (:link t :maxlevel 2 )))
+#+end_src
+
+* Testing with different values
+#+begin_src emacs-lisp
+(setq org-agenda-clockreport-parameter-plist
+      (quote (:link t :maxlevel 5 :fileskip0 t :compact t :narrow 80 :formula %)))
+#+end_src
