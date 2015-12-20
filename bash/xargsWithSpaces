@@ -1,0 +1,26 @@
+#! /bin/bash
+# Tests for xargs with spaces in filenames
+#
+# Usage: ./xargsWithSpaces a b "c d"
+#
+# Using xargs with spaces in filenames ("find -print0 ... | xargs -0 ...")
+#   http://stackoverflow.com/questions/143171/how-can-i-use-xargs-to-copy-files-that-have-spaces-and-quotes-in-their-names
+# 
+# Escaping whitespace in bash loops
+#     http://stackoverflow.com/questions/301039/how-can-i-escape-white-space-in-a-bash-loop-list
+
+set -u   # exit on undefined
+set -e   # exit on error
+
+readonly ARGS="$@"
+
+echo num args $#
+echo args $@
+
+#OIFS="$IFS"
+#IFS=$'\n'
+for arg in "$@"; do
+    printf '%s\n' "$arg"
+done
+#IFS="$OIFS"
+
