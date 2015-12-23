@@ -1,0 +1,25 @@
+# http://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sqlite.html
+# <2015-07-31 Fri>
+
+#+name: sqlite-populate-test
+#+header: :results silent
+#+header: :dir ~/tmp
+#+header: :db test-sqlite.db
+#+begin_src sqlite
+create table greeting(one varchar(10), two varchar(10));
+insert into greeting values('Hello', 'world!');
+#+end_src
+
+#+name: sqlite-hello
+#+header: :list
+#+header: :separator \ 
+#+header: :results raw
+#+header: :dir ~/tmp
+#+header: :db test-sqlite.db
+#+begin_src sqlite
+select * from greeting;
+#+end_src
+
+#+RESULTS[c20e23fd533ebd2a2fdcd8aae88aa80bc9377e81]: sqlite-hello
+Hello world!
+
