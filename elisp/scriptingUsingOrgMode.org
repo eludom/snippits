@@ -1,0 +1,124 @@
+* What
+  Running org babel code blocks as command line shell scripts. 
+* Why  
+  - Because you can.
+  - Because, really, its pretty cool to have all your code, data and
+    documentation in one file.
+  - No More Bash.
+  - Because GNU Emacs is at its core an implementation of Lisp that
+    happens to have played host to an Editor for over 30 years.
+  - I had org babel code blocks lying around that do useful thing
+    (suck my gmail down fom Google via offlineimap, apply custom tags
+    and create a full text index) and I wanted to be able to run those
+    from the command line/cron and NOT turn them into bash.
+a
+* Who
+  - George Jones
+  - John Kitchin' blog post
+
+* When  
+  <2016-07-30 Sat>
+* Where  
+
+* How  
+
+** hello.el
+
+   Put this in a file called =hello.el=
+   #+begin_example
+:;exec emacs -batch -l "$0" -f main "$@"
+; http://kitchingroup.cheme.cmu.edu/blog/2014/08/06/Writing-scripts-in-Emacs-lisp/
+
+(defun main ()
+  (print (version))
+  (print (format "I did it. you passed in %s" command-line-args-left)))
+
+;; Local Variables:
+;; mode: emacs-lisp
+;; End:
+   #+end_example
+
+   And run it thusly
+
+   #+begin_example
+george@octo elisp [master] $ chmod +x hello.el 
+george@octo elisp [master] $ ./hello.el world
+
+"GNU Emacs 25.1.50.1 (x86_64-unknown-linux-gnu, GTK+ Version 2.24.23)
+ of 2016-06-23"
+
+"I did it. you passed in (world)"
+   #+end_example
+** Running org-babel code blocks from the command line
+*** somePython.org
+
+    Create an =.org= file with a babel code block thusly:
+
+    #+begin_example
+#+name: pythonDate
+#+begin_src python :results output :exports both
+  import time
+  with open('results.dat', 'w') as f:
+      f.write(time.asctime())
+  print "Done."	
+#+end_src
+    #+end_example
+
+** run-org.el
+
+   Create the following glue code to find and execute a hunk of python
+   code in an org mode babel code block:
+
+   #+begin_example
+:;exec emacs -batch -l "$0" -f main "$@"
+; http://kitchingroup.cheme.cmu.edu/blog/2014/08/06/Writing-scripts-in-Emacs-lisp/
+
+(defun main ()
+  ;; run-org.el blockname org-file
+  ;; run a code block in an org file
+  (let ((blockname (pop command-line-args-left))
+        (org-file (pop command-line-args-left))
+        (src))
+    (print (version))    
+    (find-file org-file)
+    (setq src
+          (org-element-map (org-element-parse-buffer) 'src-block
+            (lambda (element)
+              (when (string= blockname (org-element-property :name element))
+                element))
+            nil ;info
+            t )) ; first-match
+    (when src
+      (goto-char (org-element-property :begin src))
+      ;; since we start with a fresh emacs, we have to configure some things.
+      (org-babel-do-load-languages
+       'org-babel-load-languages
+       '((python . t)))
+      (let ((org-confirm-babel-evaluate nil))
+        (org-babel-execute-src-block)))
+    (print (format "Done." ))))
+
+
+
+;; Local Variables:
+;; mode: emacs-lisp
+;; End:
+   #+end_example
+
+   Run it thusly:
+
+   #+begin_example
+george@octo elisp [master] $  ./run-org.el pythonDate somePython.org 
+
+
+"GNU Emacs 25.1.50.1 (x86_64-unknown-linux-gnu, GTK+ Version 2.24.23)
+ of 2016-06-23"
+
+executing Python code block (pythonDate)...
+Code block evaluation complete.
+
+"Done."
+george@octo elisp [master] $ george@octo elisp [master] $ cat results.dat 
+Sat Jul 30 21:08:49 2016
+george@octo elisp [master] $    
+   #+end_example

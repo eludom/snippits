@@ -1,0 +1,9 @@
+#+name: pythonDate
+#+begin_src python :results output :exports both
+  import time
+  with open('results.dat', 'w') as f:
+      f.write(time.asctime())
+      f.write("\n")
+  print "Done."	
+#+end_src
+
