@@ -1,31 +1,36 @@
-* What
-  Running org babel code blocks as command line shell scripts. 
-* Why  
-  - Because you can.
-  - Because, really, its pretty cool to have all your code, data and
-    documentation in one file.
-  - No More Bash.
-  - Because GNU Emacs is at its core an implementation of Lisp that
-    happens to have played host to an Editor for over 30 years.
-  - I had org babel code blocks lying around that do useful thing
-    (suck my gmail down fom Google via offlineimap, apply custom tags
-    and create a full text index) and I wanted to be able to run those
-    from the command line/cron and NOT turn them into bash.
-a
-* Who
-  - George Jones
-  - John Kitchin' blog post
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:nil arch:headline
+#+OPTIONS: author:t broken-links:nil c:nil creator:nil
+#+OPTIONS: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:2
+#+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+OPTIONS: timestamp:t title:t toc:t todo:t |:t
+#+TITLE: scriptingUsingOrgMode
+#+DATE: <2016-07-30 21:25:28 Saturday>
+#+AUTHOR: George M Jones
+#+EMAIL: gmj@pobox.com
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 25.1.50.1 (Org mode 8.3.4)
 
-* When  
-  <2016-07-30 Sat>
-* Where  
+* Intro
+  - What :: Running org babel code blocks as command line shell scripts. 
+  - Why  :: 1) Because you can. 2) Because, really, its pretty cool to
+       have all your code, data and documentation in one file. 3) No
+       More Bash. 4) Because GNU Emacs is at its core an
+       implementation of Lisp that happens to have played host to an
+       Editor for over 30 years. 5) I had org babel code blocks lying
+       around that do useful thing (suck my gmail down fom Google via
+       offlineimap, apply custom tags and create a full text index)
+       and I wanted to be able to run those from the command line/cron
+       and NOT turn them into bash.`
+  - Who :: George Jones <gmj@pobox.com> based on John Kitchin' blog post
+  - When :: <2016-07-30 Sat>
+  - Where :: In a lisp interpreter near you.
 
-* How  
+* hello.el
 
-** hello.el
-
-   Put this in a file called =hello.el=
-   #+begin_example
+  Put this in a file called =hello.el=
+  #+begin_example
 :;exec emacs -batch -l "$0" -f main "$@"
 ; http://kitchingroup.cheme.cmu.edu/blog/2014/08/06/Writing-scripts-in-Emacs-lisp/
 
@@ -36,11 +41,11 @@ a
 ;; Local Variables:
 ;; mode: emacs-lisp
 ;; End:
-   #+end_example
+  #+end_example
 
-   And run it thusly
+  And run it thusly
 
-   #+begin_example
+  #+begin_example
 george@octo elisp [master] $ chmod +x hello.el 
 george@octo elisp [master] $ ./hello.el world
 
@@ -48,13 +53,11 @@ george@octo elisp [master] $ ./hello.el world
  of 2016-06-23"
 
 "I did it. you passed in (world)"
-   #+end_example
-** Running org-babel code blocks from the command line
-*** somePython.org
+  #+end_example
+* somePython.org
+  Create an =.org= file with a babel code block thusly:
 
-    Create an =.org= file with a babel code block thusly:
-
-    #+begin_example
+  #+begin_example
 #+name: pythonDate
 #+begin_src python :results output :exports both
   import time
@@ -62,10 +65,8 @@ george@octo elisp [master] $ ./hello.el world
       f.write(time.asctime())
   print "Done."	
 #+end_src
-    #+end_example
-
-** run-org.el
-
+  #+end_example
+* run-org.el
    Create the following glue code to find and execute a hunk of python
    code in an org mode babel code block:
 

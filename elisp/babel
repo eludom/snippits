@@ -1,0 +1,75 @@
+#!/USSR/local/bin/emacs --script
+;; 
+;; execute code in files containing emacs org mode babel source blocks
+;;
+;; Usage:
+;;
+;;     $ babel foo.org
+;;
+;;   or, as an interpreter in a file
+;;
+;;     #! babel
+;;
+
+
+
+(dolist (word  '("~/food"))
+  (if (file-exists-p word)    
+    (progn
+      (org-babel-do-load-languages
+       'org-babel-load-languages '((python . t) (sh . t) (lisp . t) (R . t) (ditaa . t)))
+      (setq org-export-babel-evaluate nil)
+      (setq org-confirm-babel-evaluate nil)
+      (setq org-babel-sh-command "bash")
+      (setq elisp-dir word)
+      (message (format "org-bable-load directory: %s"  elisp-dir))
+      (mapc #'org-babel-load-file (directory-files elisp-dir t "\\.org$"))
+   
+      ; Load up everything in the ~/elisp
+  
+       ; http://stackoverflow.com/questions/18706250/emacs-require-all-files-in-a-directory
+  
+       (let ((loaded  (mapcar #'car load-history)))
+         (dolist (file  (directory-files elisp-dir t ".+\\.elc?$"))
+           (unless (catch 'foo
+                     (dolist (done  loaded)
+                       (when (equal file done) (throw 'foo t)))
+                     nil)
+             (load (file-name-sans-extension file))
+             (push file loaded))))
+           )))
+
+
+
+;;;; https://lists.gnu.org/archive/html/emacs-orgmode/2012-08/msg00511.html
+;;
+;;;; The subdirectory ~/.emacs.d is to be added to the top-level elisp
+;;;; file search.
+;;;(progn (cd "~/.emacs.d") (normal-top-level-add-subdirs-to-load-path))
+;;(let ((default-directory "~/.emacs.d"))
+;;  (normal-top-level-add-subdirs-to-load-path))
+;;
+;;;; Org-Mode, Org-Babel, and the tangle library are required, if we are
+;;;; to proceed further.
+;;(require 'org-install)
+;;(require 'org)
+;;(require 'ob-tangle)
+;;
+;;;; Load the main configuration and setup file.
+;;(require 'ob-ruby)
+;;(require 'ob-python)
+;;(require 'ob-emacs-lisp)
+;;(require 'ob-lisp)
+;;
+;;; allow various types of code blocks to execute
+;;(org-babel-do-load-languages
+;;    'org-babel-load-languages '((python . t) (sh . t) (lisp . t) (R . t) (ditaa . t)))
+;;(setq org-export-babel-evaluate nil)
+;;(setq org-confirm-babel-evaluate nil)
+;;
+;;;; Tangle all files given.
+;;(dolist (file command-line-args-left)
+;; (princ file)
+;; (org-babel-tangle-file file))
+;;
+;; (org-babel-tangle-file "/home/george/.emacs.d/foo.org")

@@ -1,6 +1,6 @@
-* Fun with name fields and recalculation in org tables
-  See http://orgmode.org/org.html#Advanced-features
-
+  * Fun with name fields and recalculation in org tables
+   See http://orgmode.org/org.html#Advanced-features
+  
      |---+---------+--------+--------+--------+-------+------|
      |   | Student | Prob 1 | Prob 2 | Prob 3 | Total | Note |
      |---+---------+--------+--------+--------+-------+------|
