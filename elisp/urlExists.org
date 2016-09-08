@@ -1,0 +1,22 @@
+* Testing if a URL exists from elisp
+
+#+begin_src emacs-lisp
+(if (url-http-file-exists-p "http://port111.com/index.html")
+    (message "exists")
+  (message "does not exist"))
+#+end_src
+
+#+RESULTS:
+: exists
+
+
+#+begin_src emacs-lisp                                                                                                                                                                                            
+(if (url-http-file-exists-p "http://port111.com/bogus.html")                                                                                                                                                      
+    (message "exists")                                                                                                                                                                                            
+  (message "does not exist"))                                                                                                                                                                                       
+#+end_src                                                                                                                                                                                                  
+
+#+RESULTS:
+: does not exist
+
+
