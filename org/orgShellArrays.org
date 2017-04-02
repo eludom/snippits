@@ -1,0 +1,50 @@
+#+NAME: my_list
+| one   |
+| two   |
+| three |
+
+#+NAME: experiment
+| name | first_attempt    |
+| date | [2014-03-27 Thu] |
+| user | fleury           |
+
+#+BEGIN_SRC sh :var scalar="some value" :var array=my_list :var table=experiment
+echo ${scalar}  # -> prints 'some value'
+echo ${array}   # -> prints 'one two three'
+echo ${table}   # -> prints 'first attempt [2014-03-27 Thu] fleury'
+#+END_SRC
+
+#+RESULTS:
+| some | value         |       |             |      |      |        |
+| one  | two           | three |             |      |      |        |
+| name | first_attempt | date  | [2014-03-27 | Thu] | user | fleury |
+
+
+#+BEGIN_SRC sh :var scalar="some value" :var array=my_list :var table=experiment
+echo ${scalar}
+#echo ${array[1]} # -> prints "two"
+#echo ${table[user]} # -> prints "fleury"
+#+END_SRC
+
+#+RESULTS:
+: some value
+
+
+#+name: list-o-numbers
+| 1 one | 2 | 3 |
+|     4 | 5 | 6 |
+|     7 | 8 | 9 |
+
+#+begin_src sh :var column=list-o-numbers[,0]
+  echo $column
+
+
+  foo=(1 22 33)
+  echo second ${foo[1]}
+
+  for i in $column; do 
+    echo $i
+  done
+#+end_src
+
+#+RESULTS:
