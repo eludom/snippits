@@ -1,0 +1,12 @@
+;;; Local Variables:
+;;; eval: (progn (message "foo") (message "bar"))
+;;; End:
+
+Replace default timestamp properties on file open
+
+* account
+  :PROPERTIES:
+  :dateUpdated: foo
+  :dateCreated: foo
+  :dateExpires:
+  :END:
