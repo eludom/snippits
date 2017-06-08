@@ -1,0 +1,59 @@
+* What
+  Un-Unicode elements of a python list that are unicode
+* Why  
+  I want strings.
+
+* Who  
+
+* When  
+
+* Where  
+
+* How
+  #+begin_src python :results output
+    def unUnicodeList(things):
+	"""
+	Convert any unicode elements in a list to str
+	"""
+	newThings = []
+
+	for thing in things:
+		if type(thing) is unicode:
+			newThings.append(str(thing))
+		else:
+			newThings.append(thing)
+
+	return newThings
+
+
+    def stringifyList(things):
+	"""
+	Convert all elements of a list to str
+	"""
+	newThings = []
+
+	for thing in things:
+		newThings.append(str(thing))
+
+
+	return newThings
+
+
+    foo = [u'foo',7.7,"bar"]
+    print "oldThings:", foo
+
+    bar = unUnicodeList(foo)
+    print "newThings:", bar
+
+    baz = stringifyList(foo)
+    print "stringThings:", baz
+
+
+  #+end_src
+
+  #+RESULTS:
+  : oldThings: [u'foo', 7.7, 'bar']
+  : newThings: ['foo', 7.7, 'bar']
+  : stringThings: ['foo', '7.7', 'bar']
+
+* 
