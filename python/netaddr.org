@@ -1,0 +1,53 @@
+netaddr examples
+
+* Convet IP addressses to/from integers
+  https://stackoverflow.com/questions/9590965/convert-an-ip-string-to-a-number-and-vice-versa
+
+  #+begin_src python :results output
+    import socket, struct  
+
+    def ip2long(ip):  
+	"""  
+	Convert an IP string to long  
+	"""  
+	packedIP = socket.inet_aton(ip)  
+	return struct.unpack("!L", packedIP)[0]  
+
+    print socket.inet_ntoa(struct.pack('!L', 2130706433))
+
+    print ip2long('192.168.1.1')
+
+  #+end_src
+
+  #+RESULTS:
+  : 127.0.0.1
+  : 3232235777
+
+* IP conversion
+** iprange_to_cidrs
+  #+begin_src python :results value
+    from netaddr import *
+ 
+    startip=IPAddress('192.0.2.1')
+    endip=IPAddress('192.0.2.1')
+    return iprange_to_cidrs(startip, endip)
+  #+end_src
+
+  #+RESULTS:
+  | IPNetwork | (192.0.2.1/32) |
+
+** cidr ot first and last
+  #+begin_src python :results output
+    from netaddr import *
+
+
+    net=IPNetwork('10.0.0.0/8')
+    print net.first, net.last
+  #+end_src
+
+  #+RESULTS:
+  : 167772160 184549375
+
+
+
+
