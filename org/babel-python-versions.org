@@ -1,0 +1,27 @@
+#+begin_src emacs-lisp :results none
+(setq org-babel-python-command "python3")
+#+end_src
+
+#+begin_src python :results output
+import sys
+print(sys.version)
+#+end_src
+
+#+RESULTS:
+: 3.6.1 |Anaconda 4.4.0 (64-bit)| (default, May 11 2017, 13:09:58)
+: [GCC 4.4.7 20120313 (Red Hat 4.4.7-1)]
+
+
+
+#+begin_src emacs-lisp :results none
+(setq org-babel-python-command "python2")
+#+end_src
+
+#+begin_src python :results output
+import sys
+print(sys.version)
+#+end_src
+
+#+RESULTS:
+: 2.7.13 (default, Jan 19 2017, 14:48:08)
+: [GCC 6.3.0 20170118]

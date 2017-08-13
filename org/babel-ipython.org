@@ -1,0 +1,109 @@
+ * ipython org mod examples
+
+  See https://github.com/gregsexton/ob-ipython
+
+#+BEGIN_SRC ipython :session
+  %matplotlib inline
+  import matplotlib.pyplot as plt
+  import numpy as np
+#+END_SRC
+
+
+
+Here we evaluate some code with a function definition using a named session.
+
+#+BEGIN_SRC ipython :session mysession :exports both
+  def foo(x):
+      return x + 9
+
+  [foo(x) + 7 for x in range(7)]
+#+END_SRC
+
+#+RESULTS:
+| 16 | 17 | 18 | 19 | 20 | 21 | 22 |
+
+
+
+#+BEGIN_SRC ipython :session :file /tmp/image.png :exports both
+  plt.hist(np.random.randn(20000), bins=200)
+#+END_SRC
+
+#+RESULTS:
+[[file:/tmp/image.png]]
+
+[[file:/tmp/image.png]]
+
+
+
+
+#+BEGIN_SRC ipython :session :file /tmp/image2.svg :exports both
+  %config InlineBackend.figure_format = 'svg'
+  plt.hist(np.random.randn(2000), bins=20)
+#+END_SRC
+
+#+RESULTS:
+[[file:/tmp/image2.svg]]
+
+
+
+#+BEGIN_SRC ipython :session :kernel clojure
+  (+ 1 2)
+#+END_SRC
+
+ob-ipython supports providing variables and even tables to code.
+
+#+TBLNAME: data_table
+| a | 1 | 2 |
+| b | 2 | 3 |
+| c | 3 | 4 |
+
+#+BEGIN_SRC ipython :session :exports both :var x=2 :var data=data_table
+  (x, data)
+#+END_SRC
+
+#+RESULTS:
+| 2 | ((a 1 2) (b 2 3) (c 3 4)) |
+
+
+
+
+#+BEGIN_SRC ipython :session :file /tmp/image3.svg :exports both :async t
+  %config InlineBackend.figure_format = 'svg'
+  import time
+  time.sleep(3)
+
+  plt.hist(np.random.randn(200), bins=10)
+#+End_SRC
+
+#+RESULTS:
+[[file:/tmp/image3.svg]]
+
+
+
+
+
+#+BEGIN_SRC ipython :session mysession :exports both
+    import sys
+
+    def foo(x):
+	    return x + 9
+
+    sys.stderr.write("This is on stderr\n")
+    sys.stdout.write("This is on stdout\n")
+    [foo(x) + 7 for x in range(7)]
+#+END_SRC
+
+#+RESULTS:
+| 16 | 17 | 18 | 19 | 20 | 21 | 22 |
+
+
+#+BEGIN_SRC ipython :session mysession :exports both
+  import sys
+
+
+  sys.stderr.write("This is on stderr\n")
+  sys.stdout.write("This is on stdout\n")
+
+  42/0  # this should throw  an error
+  return 42
+#+END_SRC
