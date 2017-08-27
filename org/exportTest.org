@@ -1,0 +1,18 @@
+Testing export of results and not code:
+
+From: https://emacs.stackexchange.com/questions/7442/export-results-of-codeblock-then-later-export-the-source-block-e-g-as-for-a-c
+
+
+* Results  
+   #+NAME: tab:mytable  
+   #+RESULTS: src:foo  
+   | Mon | Jun | 5 | 13:24:07 | EDT | 2017 |
+   | foo |     |   |          |     |      |
+     
+     
+* Code  
+   #+NAME: src:foo  
+   #+BEGIN_SRC shell :exports results
+   date
+   echo foo
+   #+END_SRC  
