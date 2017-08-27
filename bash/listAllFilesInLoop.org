@@ -1,0 +1,29 @@
+#! /bin/bash
+
+
+#+begin_src shell  :results output :exports both
+  exec 2>&1;date;set -e; set -u; # set -x
+
+  # List all files matching glob, do something to them.
+  # Handle non-existant files/non-matching globs
+
+  touch a.txt b.txt c.txt d.dat
+  rm -f e.DNE
+
+  for i in *.txt *.dat *.DNE; do
+
+      if [ -f $i ]; then
+	  echo i is $i
+      fi
+  done
+
+  rm -f a.txt b.txt c.txt d.dat
+#+end_src
+
+#+RESULTS:
+: Tue Jul 25 06:28:55 EDT 2017
+: i is a.txt
+: i is b.txt
+: i is c.txt
+: i is d.dat
+

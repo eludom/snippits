@@ -1,0 +1,6 @@
+* Famous mashups
+
+  #+begin_quote
+  Once upon a midnight dreary, our forefathers founded a place where
+  no man has gone before...
+  #+end_quote

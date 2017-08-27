@@ -1,0 +1,14 @@
+* Print rust IP addresses
+  #+begin_src rust :results output
+    fn main() {
+	use std::net::Ipv4Addr;
+
+	let addr = Ipv4Addr::new(127, 0, 0, 1);
+	print!("addr {}", addr)
+    }
+
+    main()
+  #+end_src
+
+  #+RESULTS:
+  : addr 127.0.0.1()
