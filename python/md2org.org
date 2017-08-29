@@ -1,0 +1,52 @@
+#+begin_src python :results output
+def md_2_org(md_text):
+    """Convert select markdown text to equivilant org mode markup
+
+    pandoc may be a more complete colution.
+
+    Keyword arguments:
+    md_text -- a blob of markdown text
+
+    Returns:
+    org mode text as a string
+    """
+
+    # convert markdown to org
+
+    org_text = ""
+
+    for line in md_text.split("\n"):
+
+        # relplace markdown section headers
+
+        replaced = len(line) - len(line.lstrip("#"))
+        if (replaced > 0):
+            line =  "*"*replaced + line[replaced:]
+
+        org_text += line + "\n"
+
+    return org_text
+
+
+md_doc="""
+# Intro
+
+Four Score and Seven Years Ago
+
+### Our fathers..
+"""
+
+bar=md_2_org(md_doc)
+print(bar)
+
+#+end_src
+
+#+RESULTS:
+:
+: * Intro
+:
+: Four Score and Seven Years Ago
+:
+: *** Our fathers..
+:
+:

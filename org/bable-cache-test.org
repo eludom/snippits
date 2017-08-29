@@ -1,0 +1,15 @@
+      #+NAME: random
+      #+BEGIN_SRC R :cache yes
+      runif(1)
+      #+END_SRC
+
+      #+RESULTS[29ec46ce8d80a7cba243286304453ea40f4dbbca]: random
+      : 0.364576283143833
+
+      #+NAME: caller
+      #+BEGIN_SRC emacs-lisp :var x=random :cache yes
+      x
+      #+END_SRC
+
+      #+RESULTS[2908ff86d53b1b95dcb8b4ad1c5439c72c083af5]: caller
+      : 0.364576283143833

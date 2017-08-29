@@ -1,0 +1,49 @@
+Test results of reading cached results in OB blocks w/o re-exeuction
+
+Caveat: results have to be left justified if caching us used or
+results are not picked up
+
+* Output cached tables
+** Left Justified
+#+name: STUFF1
+#+begin_src shell  :results output table :exports results :cache yes
+echo a b c time
+echo 1 2 3 `date +%s`
+echo 4 5 6 0
+#+end_src
+
+#+RESULTS[ab9d0568e51adca45cdf65701d481a475d07b0e3]: STUFF1
+| a | b | c |       time |
+| 1 | 2 | 3 | 1503328650 |
+| 4 | 5 | 6 |          0 |
+
+** Not Left Justified
+  #+name: STUFF2
+  #+begin_src shell  :results output table :exports results :cache yes
+  echo d e f time
+  echo 1 2 3 `date +%s`
+  echo 4 5 6 0
+  #+end_src
+
+  #+RESULTS[395dcd437c9eb11f42e463c5333797c0007f0b9a]: STUFF2
+  | d | e | f |       time |
+  | 1 | 2 | 3 | 1503328653 |
+  | 4 | 5 | 6 |          0 |
+
+
+     #+BEGIN_SRC ipython :session foo  :var stuff1=STUFF1 :exports results
+stuff1
+     #+END_SRC
+
+     #+RESULTS:
+     | a | b | c |       time |
+     | 1 | 2 | 3 | 1503328650 |
+     | 4 | 5 | 6 |          0 |
+
+
+     #+BEGIN_SRC ipython :session foo  :var stuff2=STUFF2 :exports results
+stuff2
+     #+END_SRC
+
+     #+RESULTS:
+     : nil

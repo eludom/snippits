@@ -1,0 +1,152 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t broken-links:nil c:nil creator:nil
+#+OPTIONS: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:t
+#+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+OPTIONS: timestamp:t title:t toc:nil todo:t |:t
+#+TITLE: exports-test
+#+DATE: <2017-08-21 10:00:04 Monday>
+#+AUTHOR: George Jones
+#+EMAIL: gmj@duox
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 25.1.1 (Org mode 9.0.9)
+
+* org-mode post of 2017-08-15
+** interaction of =org-export-babel-evaluate= and =results output= counter-intuitive
+   I want to define code blocks that export only results, and are not
+   automatically executed on export. To get this behavior, I have to
+
+   - =setq org-export-babel-evaluate t)=
+
+   and use both
+
+   #+begin_example
+  :eval never-export
+  :results output
+   #+end_example
+
+   Which seems a little counter-intuitive.   The problem is that
+   headers (includiing  =:results output=) are ignored when
+   =org-export-babel-evaluate= is set.
+
+   Perhaps this headers (at least) should be honored when
+   =org-export-babel-evaluate= is set?
+
+   Is there a way to make =eval never-export= the default?
+
+* show environment
+** org-version
+  #+BEGIN_SRC elisp :exports results
+  (format "This should only export the results\nemacs %s\norg %s" emacs-version org-version)
+  #+END_SRC
+
+  #+RESULTS:
+  : This should only export the results
+  : emacs 25.1.1
+  : org 9.0.9
+
+** emacs-version
+  #+begin_src elisp
+  (emacs-version)
+  #+end_src
+
+  #+RESULTS:
+  : GNU Emacs 25.1.1 (x86_64-pc-linux-gnu, GTK+ Version 3.22.11)
+  :  of 2017-03-29, modified by Debian
+
+* Testing
+** eval never-export, exports results, setq org-export-babel-evaluate t
+
+   Setting
+
+   #+begin_example
+  setq org-export-babel-evaluate t)
+  :eval never-export
+  :results output
+   #+end_example
+
+   results in no code execution (expected, desired), and output of only
+   results (desired, expected)
+
+   #+begin_src shell  :results output :exports results :eval never-export
+    exec 2>&1;date;set -e; set -u; # set -x
+    # THIS IS CODE, I ONLY WANT TO SEE RESULTS
+    echo hello world
+   #+end_src
+
+   #+RESULTS:
+   : Tue Aug 15 08:08:11 EDT 2017
+
+   : hello world
+
+** Tests
+** Set /org-export-babel-evaluate nil/                             :noexport:
+   #+BEGIN_SRC emacs-lisp :exports code
+  (setq org-export-babel-evaluate nil)
+   #+end_src
+
+   #+RESULTS:
+
+** exports results, setq org-export-babel-evaluate nil
+
+   Setting
+
+   #+begin_example
+  setq org-export-babel-evaluate nil)
+  results output
+   #+end_example
+
+   results in no code execution (good, expected), but the /:results
+   output/ header is apperently ignored and aboth code (bad, not
+   expected) and results are output.
+
+   #+begin_src shell  :results output :exports results
+    exec 2>&1;date;set -e; set -u; # set -x
+    # THIS IS CODE, I ONLY WANT TO SEE RESULTS
+    echo hello world
+   #+end_src
+
+   #+RESULTS:
+   : Tue Aug 15 07:51:54 EDT 2017
+   : hello world
+
+** Set /org-export-babel-evaluate nil/                             :noexport:
+   #+BEGIN_SRC emacs-lisp :exports code
+  (setq org-export-babel-evaluate t)
+   #+end_src
+
+   #+RESULTS:
+   : t
+
+
+
+** exports results, setq org-export-babel-evaluate t
+
+   Setting
+
+   #+begin_example
+  setq org-export-babel-evaluate t)
+  results output
+   #+end_example
+
+   results in no code execution (expected, not what I want), but the /:results
+   output/ header is respected.
+
+   #+begin_src shell  :results output :exports results
+    exec 2>&1;date;set -e; set -u; # set -x
+    # THIS IS CODE, I ONLY WANT TO SEE RESULTS
+    echo hello world
+   #+end_src
+
+   #+RESULTS:
+   : Tue Aug 15 07:55:47 EDT 2017
+   : hello world
+
+* See
+  - Discussion of the same problem from https://www.miskatonic.org/2016/10/03/orgexportbabelevaluate/
+    Answer was
+
+    #+begin_src
+    #+PROPERTY: header-args :eval never-export
+    #+end_src

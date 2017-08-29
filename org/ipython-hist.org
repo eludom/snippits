@@ -1,0 +1,73 @@
+* Playing with histograms in ob-ipython
+
+  See https://github.com/gregsexton/ob-ipython
+
+#+BEGIN_SRC ipython :session
+  %matplotlib inline
+  import matplotlib.pyplot as plt
+  import numpy as np
+#+END_SRC
+
+
+
+#+BEGIN_SRC ipython :session :file /tmp/hist.svg :exports both
+
+  points=np.random.randn(1000)
+
+  print("min", points.min())
+  min_x=int(points.min() - 1)
+  print("min_x", min_x)
+
+  print("max", points.max())
+  max_x=int(points.max() + 1)
+  print("max_x", max_x)
+
+
+  #print("points", points)
+
+#+End_SRC
+
+
+
+#+BEGIN_SRC ipython :session :file /tmp/hist.svg :exports both
+    %config InlineBackend.figure_format = 'svg'
+
+    plt.hist(points, bins=10)
+    plt.axis([min_x, max_x,0,20])
+    plt.xlabel('X things')
+    plt.ylabel('Y things')
+    plt.title("Title Thing")
+    plt.grid(True)
+#+End_SRC
+
+
+
+* Example histogram
+   From https://matplotlib.org/1.2.1/examples/pylab_examples/histogram_demo.html
+
+  #+BEGIN_SRC ipython :session :file /tmp/hist2.svg :exports both
+    %config InlineBackend.figure_format = 'svg'
+
+    import numpy as np
+    import matplotlib.mlab as mlab
+    import matplotlib.pyplot as plt
+
+    mu, sigma = 100, 15
+    x = mu + sigma*np.random.randn(10000)
+
+    # the histogram of the data
+    n, bins, patches = plt.hist(x, 50, normed=1, facecolor='green', alpha=0.75)
+
+    # add a 'best fit' line
+    y = mlab.normpdf( bins, mu, sigma)
+    l = plt.plot(bins, y, 'r--', linewidth=1)
+
+    plt.xlabel('Smarts')
+    plt.ylabel('Probability')
+    plt.title(r'$\mathrm{Histogram\ of\ IQ:}\ \mu=100,\ \sigma=15$')
+    plt.axis([40, 160, 0, 0.03])
+    plt.grid(True)
+    #+END_SRC
+
+    #+RESULTS:
+    [[file:/tmp/hist2.svg]]
