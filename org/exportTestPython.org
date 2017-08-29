@@ -1,0 +1,14 @@
+Testing export of results and not code from python:
+
+# From: https://emacs.stackexchange.com/questions/7442/export-results-of-codeblock-then-later-export-the-source-block-e-g-as-for-a-c
+
+
+* Code  
+   #+NAME: src:foo
+   #+BEGIN_SRC python :exports none :results output
+   print "bar"
+   #+END_SRC  
+
+   #+RESULTS: src:foo
+   : bar
+
