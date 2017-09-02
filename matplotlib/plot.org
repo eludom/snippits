@@ -1,0 +1,59 @@
+Experiments with matplotlib
+
+#+BEGIN_SRC ipython :session tests :exports both :file plot.png
+  %matplotlib inline
+  import matplotlib.pyplot as plt
+  import numpy as np
+  import pandas as pd
+
+
+  # Plot some points
+
+  x1 = np.array([20, 21, 22, 23, 24, 25, 26])
+  y1 = np.array([6, 7, 8, 9, 10, 11, 12])
+
+  plt.plot(x1,y1,"-o",label='right of center')
+
+  # Plot some random points
+
+  x2 = np.array([6,7,8,9,10,11,12])
+  y2 = np.array([13, 14, 15, 16, 17, 18, 19])
+  y2random=np.random.uniform(13, 19,7)
+  plt.plot(x2,y2random,"-o",label='random, left')
+
+  # Smoth out the line for the random points
+
+  T=x2
+  power=y2random
+
+  xnew = np.linspace(T.min(),T.max(),14) #300 represents number of points to make between T.min and T.max
+
+  power_smooth = spline(T,power,xnew)
+
+  plt.plot(xnew,power_smooth,"-",label='random, left, smooth')
+
+
+  plt.legend()
+  # ax = plt.gca()
+
+  # ax.set_xlabel('Date')
+  # ax.set_ylabel('Units')
+  # ax.set_title('Exponential vs. Linear performance')
+
+  plt.xlabel('The number of times the child kicked a ball')
+  # add a label to the y axis
+  plt.ylabel('The grade of the student')
+  # add a title
+  plt.title('Relationship between ball kicking and grades')
+
+
+
+#+END_SRC
+
+#+RESULTS:
+[[file:plot.png]]
+
+
+
+*
+*
