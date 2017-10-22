@@ -1,0 +1,74 @@
+Convert all fields in a column to integer or NaN
+
+#+begin_src ipython :session Assignment4  :exports both  :results output
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import math
+
+purchase_1 = pd.Series({'Name': 'Fred',
+                        'Item Purchased': 'Piston Engine',
+                        'Cost': 22.50})
+purchase_2 = pd.Series({'Name': 'Wilbur',
+                        'Item Purchased': 'Woes',
+                        'Cost': 2})
+purchase_3 = pd.Series({'Name': 42,
+                        'Item Purchased': 'The Wrong Thing',
+                        'Cost': "An arm and a leg"})
+
+#
+# "Cost" has float, int and str values
+#
+df = pd.DataFrame([purchase_1, purchase_2, purchase_3], index=['Store 1', 'Store 1', 'Store 2'])
+print("Data")
+print(df.head())
+print("")
+
+#
+# Print the types in each column
+#
+
+#print("Types")
+
+# All at once
+#dtypeCount =[df3.iloc[:,i].apply(type).value_counts() for i in range(df3.shape[1])]
+
+
+# One at a time
+# for i in range(df.shape[1]):
+#     print("i=", i)
+#     print(df.iloc[:,i].apply(type).value_counts())
+
+
+#
+# Apply funtion to convert everyhing
+# in 'Cost' column to integer or NaN
+#
+
+def cost2int(row):
+    try:
+        row['Cost']=int(row['Cost'])
+    except:
+        row['Cost']=math.nan
+
+    return row
+
+#
+# Print the results
+#
+print(df.apply(cost2int, axis=1))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Data
+                     Cost   Item Purchased    Name
+Store 1              22.5    Piston Engine    Fred
+Store 1                 2             Woes  Wilbur
+Store 2  An arm and a leg  The Wrong Thing      42
+
+         Cost   Item Purchased    Name
+Store 1  22.0    Piston Engine    Fred
+Store 1   2.0             Woes  Wilbur
+Store 2   NaN  The Wrong Thing      42
+#+end_example
