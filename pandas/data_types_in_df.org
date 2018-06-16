@@ -1,0 +1,75 @@
+Count the number of different data types in pandas column
+https://stackoverflow.com/questions/41262370/determining-pandas-column-datatype
+
+#+begin_src ipython :session Assignment4  :exports both  :results output
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+purchase_1 = pd.Series({'Name': 'Fred',
+                        'Item Purchased': 'Piston Engine',
+                        'Cost': 22.50})
+purchase_2 = pd.Series({'Name': 'Wilbur',
+                        'Item Purchased': 'Woes',
+                        'Cost': 2.50})
+
+# Data with only expected types in frame
+df = pd.DataFrame([purchase_1, purchase_2], index=['Store 1', 'Store 1'])
+print("Data")
+print(df.head())
+print("")
+
+dtypeCount =[df.iloc[:,i].apply(type).value_counts() for i in range(df.shape[1])]
+print("Types")
+print(dtypeCount)
+
+
+# Data with unexpected types
+purchase_3 = pd.Series({'Name': 42,
+                        'Item Purchased': 'The Wrong Thing',
+                        'Cost': "An arm and a leg"})
+df2 = pd.DataFrame([purchase_1, purchase_2, purchase_3], index=['Store 1', 'Store 1', 'Store 2'])
+print("Data")
+print(df2.head())
+print("")
+
+#dtypeCount =[df2.iloc[:,i].apply(type).value_counts() for i in range(df2.shape[1])]
+print("Types")
+for i in range(df2.shape[1]):
+    print("i=", i)
+    print(df2.iloc[:,i].apply(type).value_counts())
+
+
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Data
+         Cost Item Purchased    Name
+Store 1  22.5  Piston Engine    Fred
+Store 1   2.5           Woes  Wilbur
+
+Types
+[<class 'float'>    2
+Name: Cost, dtype: int64, <class 'str'>    2
+Name: Item Purchased, dtype: int64, <class 'str'>    2
+Name: Name, dtype: int64]
+Data
+                     Cost   Item Purchased    Name
+Store 1              22.5    Piston Engine    Fred
+Store 1               2.5             Woes  Wilbur
+Store 2  An arm and a leg  The Wrong Thing      42
+
+Types
+i= 0
+<class 'float'>    2
+<class 'str'>      1
+Name: Cost, dtype: int64
+i= 1
+<class 'str'>    3
+Name: Item Purchased, dtype: int64
+i= 2
+<class 'str'>    2
+<class 'int'>    1
+Name: Name, dtype: int64
+#+end_example
