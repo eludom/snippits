@@ -1,0 +1,26 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:nil arch:headline
+#+OPTIONS: author:t broken-links:nil c:nil creator:nil
+#+OPTIONS: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:2
+#+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+OPTIONS: timestamp:t title:t toc:t todo:t |:t
+#+TITLE: markdown-tests
+#+DATE: <2019-05-29 09:52:50 Wednesday>
+#+AUTHOR: George Jones
+#+EMAIL: eludom@gmail.com
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 27.0.50 (Org mode 9.1.14)
+
+This is a place to test markdown features.
+The features are tested by creating the desired
+markup in org-mode and exporting to .md
+
+
+Here is some text
+
+* Target1
+  Text under Target1
+
+* Target 2
+  Text under Target 2
