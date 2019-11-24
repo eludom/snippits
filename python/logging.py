@@ -70,4 +70,4 @@ def main():
     debug("This is an debug message")
 
 
-main()
+#main()
