@@ -2,7 +2,7 @@
 # (in this case, because aliases don't)
 
 
-hgt() {
+function hgt() {
     # hgt == "history grep (for arg) tail"
     #echo "Histroy Grep tail"
 
