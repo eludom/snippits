@@ -1,3 +1,4 @@
+#! /bin/bash
 #! /home/gmj/bin/bash5-patched
 # This is a quick set of tests to see where bash associative arrays
 # start to slow down.   The tests will be done by generating a list of
