@@ -13,7 +13,7 @@ function info()  { echo `date "+%b %d %H:%M:%S"` ${PROG}\: info: "$@" 1>&2; }
 function warn()  { echo `date "+%b %d %H:%M:%S"` ${PROG}\: warning: "$@" 1>&2; }
 function error() { echo `date "+%b %d %H:%M:%S"` ${PROG}\: error: "$@" 1>&2; }
 function debug() { [[ -v DEBUG ]] && echo `date "+%b %d %H:%M:%S"` ${PROG}\: debug: "$@" 1>&2 || true ; }
-function die()   { echo `date "+%b %d %H:%M:%S"` ${PROG}\: fatal: "$@" 1>&2 && exit 1
+function die()   { echo `date "+%b %d %H:%M:%S"` ${PROG}\: fatal: "$@" 1>&2 && exit 1 }
 
 function usage() {
     debug "in ${FUNCNAME[0]}"
